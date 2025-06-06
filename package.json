@@ -1,0 +1,30 @@
+{
+  "name": "handler",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^1.12.4",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "packageManager": "pnpm@8.15.4",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
+  }
+}
