@@ -1,6 +1,6 @@
 # Handler Monorepo
 
-This is a monorepo containing a Next.js frontend and tRPC backend, built with TypeScript.
+A modern, production-ready monorepo template for a Next.js frontend and tRPC backend, built with TypeScript.
 
 ## Project Structure
 
@@ -16,13 +16,20 @@ This is a monorepo containing a Next.js frontend and tRPC backend, built with Ty
 
 ## Getting Started
 
-1. Install dependencies:
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd handler
+   ```
+
+2. **Install dependencies:**
 
    ```bash
    pnpm install
    ```
 
-2. Start the development servers:
+3. **Start the development servers:**
 
    ```bash
    # Start both frontend and backend
@@ -33,7 +40,7 @@ This is a monorepo containing a Next.js frontend and tRPC backend, built with Ty
    pnpm --filter @handler/server dev
    ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser.**
 
 ## Available Scripts
 
@@ -69,3 +76,27 @@ This is a monorepo containing a Next.js frontend and tRPC backend, built with Ty
   - Turborepo
   - ESLint
   - Prettier
+
+## Production Deployment
+
+- Docker and Docker Compose configurations are provided for production deployment.
+- Run `docker-compose -f docker-compose.prod.yml up` to start the production environment.
+
+## CI/CD
+
+- GitHub Actions workflows for CI/CD are included in `.github/workflows/`.
+- Automated linting, testing, and deployment pipelines are configured.
+
+## Monitoring and Observability
+
+- Prometheus and Grafana are configured for monitoring.
+- OpenTelemetry is set up for distributed tracing.
+
+## Security
+
+- Security middleware (Helmet, rate limiting) is configured.
+- Regular security scans are automated via GitHub Actions.
+
+## License
+
+[MIT](LICENSE)
