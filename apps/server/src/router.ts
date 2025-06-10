@@ -1,11 +1,11 @@
-import { initTRPC, AnyRouter, ProcedureBuilder } from '@trpc/server';
+import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { Context } from './context';
 
 const t = initTRPC.context<Context>().create();
 
-export const router: typeof t.router = t.router;
-export const publicProcedure: typeof t.procedure = t.procedure;
+export const router = t.router;
+export const publicProcedure = t.procedure;
 
 export const appRouter = router({
   hello: publicProcedure.input(z.object({ name: z.string().optional() })).query(({ input }) => {

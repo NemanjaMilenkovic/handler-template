@@ -1,6 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { Express } from 'express';
+import compression from 'compression';
 
 export const securityMiddleware = (app: Express) => {
   // Rate limiting
@@ -13,7 +14,9 @@ export const securityMiddleware = (app: Express) => {
   // Apply security middleware
   app.use(helmet()); // Security headers
   app.use(limiter); // Rate limiting
-  app.use((req, res, next) => {
+  app.use(compression()); // Enable compression
+  app.use((_req, res, next) => {
+    // Security headers
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');

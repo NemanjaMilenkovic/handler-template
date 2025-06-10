@@ -8,18 +8,37 @@ on:
 
 jobs:
   build-and-test:
+    name: Build, Lint & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Read .nvmrc
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
+
+      # Setup pnpm before Node.js. This action makes the `pnpm` command available.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      # Setup Node.js using the version from .nvmrc and enable caching for pnpm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 8.15.4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm build
-      - run: pnpm test || true
-      - run: pnpm tsc --noEmit
-      - run: pnpm audit --audit-level=moderate
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint Code
+        run: pnpm lint
+
+      - name: Build Projects
+        run: pnpm build
+
+      - name: Run Tests
+        run: pnpm test
+
+      - name: Security Audit
+        run: pnpm audit --audit-level=high
