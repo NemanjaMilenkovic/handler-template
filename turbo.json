@@ -14,7 +14,7 @@
     "test": {
       "dependsOn": ["build"],
       "outputs": ["coverage/**"],
-      "inputs": ["src/__tests__/**/*.ts?(x)", "src/__tests__/**/*.js?(x)"]
+      "inputs": ["src/__tests__/**/*.{ts,tsx,js,jsx}"]
     }
   }
 }
