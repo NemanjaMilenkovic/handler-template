@@ -1,16 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import { createExpressMiddleware } from '@trpc/server/adapters/express';
-import { appRouter } from './router';
-import { createContext } from './context';
 import 'dotenv/config';
+
 import * as Sentry from '@sentry/node';
+import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import cors from 'cors';
+import express from 'express';
+
+import env from './config/env';
+import { createContext } from './context';
 import { errorHandler } from './middleware/errorHandler';
-import { securityMiddleware } from './middleware/security';
 import { metricsMiddleware } from './middleware/metrics';
+import { securityMiddleware } from './middleware/security';
+import { appRouter } from './router';
 import { gracefulShutdown } from './utils/gracefulShutdown';
 import logger from './utils/logger';
-import env from './config/env';
 
 Sentry.init({ dsn: env.SENTRY_DSN });
 

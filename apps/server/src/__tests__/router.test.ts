@@ -1,7 +1,8 @@
-import { appRouter } from '../router';
-import { createContext } from '../context';
 import { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 import { Request, Response } from 'express';
+
+import { createContext } from '../context';
+import { appRouter } from '../router';
 
 describe('tRPC Router', () => {
   const mockContext: CreateExpressContextOptions = {

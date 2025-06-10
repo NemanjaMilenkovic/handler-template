@@ -1,11 +1,12 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Sentry from '@sentry/nextjs';
-import { useState } from 'react';
-import type { AppProps } from 'next/app';
-import { trpc } from '../utils/trpc';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useState } from 'react';
+
 import { ErrorBoundary } from '../components/ErrorBoundary';
+import { trpc } from '../utils/trpc';
 
 Sentry.init({ dsn: process.env.NEXT_PUBLIC_SENTRY_DSN });
 

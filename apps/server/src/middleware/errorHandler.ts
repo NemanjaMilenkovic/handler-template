@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
 import * as Sentry from '@sentry/node';
+import { NextFunction,Request, Response } from 'express';
 
 export class AppError extends Error {
   constructor(

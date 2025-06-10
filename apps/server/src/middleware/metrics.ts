@@ -1,10 +1,10 @@
-import { Express } from 'express';
-import { Registry, Counter, Histogram } from 'prom-client';
-import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
+import { NodeSDK } from '@opentelemetry/sdk-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { Express } from 'express';
+import { Counter, Histogram,Registry } from 'prom-client';
 
 // Initialize Prometheus metrics
 const register = new Registry();

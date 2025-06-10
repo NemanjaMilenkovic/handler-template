@@ -1,7 +1,7 @@
+import compression from 'compression';
+import { Express } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import { Express } from 'express';
-import compression from 'compression';
 
 export const securityMiddleware = (app: Express) => {
   // Rate limiting

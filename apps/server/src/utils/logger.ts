@@ -1,5 +1,5 @@
-import winston from 'winston';
 import { context, trace } from '@opentelemetry/api';
+import winston from 'winston';
 
 const otelFormat = winston.format(info => {
   const span = trace.getSpan(context.active());

@@ -1,4 +1,5 @@
 import { Server } from 'http';
+
 import logger from './logger';
 
 export const gracefulShutdown = (server: Server) => {

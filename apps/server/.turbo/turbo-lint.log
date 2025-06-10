@@ -1,4 +1,5 @@
 
+
 > @handler/server@0.0.0 lint /Users/nemanja/Workspace/a/handler/apps/server
-> eslint src --ext .ts
+> eslint src --ext .ts "--fix"
 

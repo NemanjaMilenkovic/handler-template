@@ -1,5 +1,6 @@
 
+
 > @handler/web@0.0.0 lint /Users/nemanja/Workspace/a/handler/apps/web
-> next lint
+> next lint "--fix"
 
 [32m✔ No ESLint warnings or errors[39m
