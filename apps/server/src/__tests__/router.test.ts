@@ -1,11 +1,12 @@
 import { appRouter } from '../router';
 import { createContext } from '../context';
 import { CreateExpressContextOptions } from '@trpc/server/adapters/express';
+import { Request, Response } from 'express';
 
 describe('tRPC Router', () => {
   const mockContext: CreateExpressContextOptions = {
-    req: {} as any,
-    res: {} as any,
+    req: {} as Request,
+    res: {} as Response,
   };
 
   describe('hello procedure', () => {
