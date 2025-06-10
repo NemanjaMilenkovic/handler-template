@@ -2,7 +2,6 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { Express } from 'express';
 import compression from 'compression';
-import { v4 as uuidv4 } from 'uuid';
 
 export const securityMiddleware = (app: Express) => {
   // Rate limiting
@@ -16,11 +15,7 @@ export const securityMiddleware = (app: Express) => {
   app.use(helmet()); // Security headers
   app.use(limiter); // Rate limiting
   app.use(compression()); // Enable compression
-  app.use((req, res, next) => {
-    // Add request ID for tracking
-    req.id = uuidv4();
-    res.setHeader('X-Request-ID', req.id);
-
+  app.use((_req, res, next) => {
     // Security headers
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
