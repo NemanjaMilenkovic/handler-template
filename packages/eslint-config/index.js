@@ -4,10 +4,11 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:@next/next/recommended",
     "prettier"
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "react", "react-hooks"],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "@next/next"],
   rules: {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
