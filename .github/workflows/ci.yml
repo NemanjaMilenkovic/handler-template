@@ -14,20 +14,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Read .nvmrc to get the Node.js version
       - name: Read .nvmrc
         run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_ENV
 
-      # Setup Node.js using the version from .nvmrc and enable caching
+      # Setup pnpm before Node.js. This action makes the `pnpm` command available.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      # Setup Node.js using the version from .nvmrc and enable caching for pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm' # Enable caching for pnpm
-
-      # The pnpm/action-setup action will automatically read the pnpm version from package.json
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -45,4 +44,4 @@ jobs:
         run: pnpm test
 
       - name: Security Audit
-        run: pnpm audit --audit-level=high # It is better to use 'high'
+        run: pnpm audit --audit-level=high
