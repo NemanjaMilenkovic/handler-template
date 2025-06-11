@@ -1,45 +1,39 @@
 # Production-Grade Full-Stack Template
 
-This is a template for building modern, robust, and observable full-stack applications. It provides a solid foundation with a Next.js frontend, a tRPC backend, and a complete suite of production-grade tools, all managed in a Turborepo monorepo.
-
-The core philosophy is to provide end-to-end typesafety, a great developer experience, and out-of-the-box observability, allowing you to focus on building features, not boilerplate.
-
----
-
 ## What's Inside?
 
 This template comes pre-configured with a modern technology stack.
 
 ### Core Frameworks
 
-- **[Next.js](https://nextjs.org/)**: A complete React framework for the frontend.
-- **[Express.js](https://expressjs.com/)**: A minimal and flexible Node.js framework for the backend server.
-- **[tRPC](https://trpc.io/)**: For building end-to-end typesafe APIs without schemas or code generation. Your frontend can call your backend with full autocompletion and type safety.
+- **[Next.js](https://nextjs.org/)**
+- **[Express.js](https://expressjs.com/)**
+- **[tRPC](https://trpc.io/)**
 
 ### Tooling & Monorepo
 
-- **[pnpm](https://pnpm.io/)**: A fast, disk space-efficient package manager.
-- **[Turborepo](https://turbo.build/repo)**: A high-performance build system for monorepos, enabling fast, cached builds and tests.
-- **[TypeScript](https://www.typescriptlang.org/)**: For static type-checking across the entire stack.
-- **[ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)**: For consistent code style, formatting, and automatic import sorting.
+- **[pnpm](https://pnpm.io/)**
+- **[Turborepo](https://turbo.build/repo)**
+- **[TypeScript](https://www.typescriptlang.org/)**
+- **[ESLint](https://eslint.org/) & [Prettier](https://prettier.io/)**
 
 ### Observability & Monitoring (The "O11y" Stack)
 
-- **[OpenTelemetry](https://opentelemetry.io/)**: The standard for generating and collecting telemetry data (traces, metrics, logs).
-- **[Prometheus](https://prometheus.io/)**: For collecting and storing time-series metrics from the backend.
-- **[Grafana](https://grafana.com/)**: For visualizing metrics and creating dashboards.
-- **[Sentry](https://sentry.io/)**: For real-time error reporting and performance monitoring.
-- **[Winston](https://github.com/winstonjs/winston)**: For structured, production-ready logging, automatically correlated with OpenTelemetry traces.
+- **[OpenTelemetry](https://opentelemetry.io/)**
+- **[Prometheus](https://prometheus.io/)**
+- **[Grafana](https://grafana.com/)**
+- **[Sentry](https://sentry.io/)**
+- **[Winston](https://github.com/winstonjs/winston)**
 
 ### Testing & CI/CD
 
-- **[Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)**: For unit and component testing.
-- **[GitHub Actions](https://github.com/features/actions)**: Pre-configured CI/CD workflows for building, testing, linting, and security scanning.
-- **[CodeQL](https://codeql.github.com/)**: For automated static analysis and security vulnerability detection.
+- **[Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)**
+- **[GitHub Actions](https://github.com/features/actions)**
+- **[CodeQL](https://codeql.github.com/)**
 
 ### Deployment
 
-- **[Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)**: For containerizing the applications and running the entire stack in a production-like environment.
+- **[Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)**
 
 ---
 

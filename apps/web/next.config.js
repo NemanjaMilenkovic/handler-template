@@ -5,8 +5,9 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/trpc/:path*",
-        destination: "http://localhost:3001/trpc/:path*",
+        source: "/api/trpc/:path*",
+        destination:
+          process.env.TRPC_URL_REWRITE || "http://localhost:3001/trpc/:path*",
       },
     ];
   },
