@@ -8,9 +8,7 @@ const Error: NextPage<ErrorProps> = ({ statusCode }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <h1 className="text-4xl font-bold">
-        {statusCode
-          ? `An error ${statusCode} occurred on server`
-          : 'An error occurred on client'}
+        {statusCode ? `An error ${statusCode} occurred on server` : 'An error occurred on client'}
       </h1>
     </div>
   );
@@ -21,4 +19,4 @@ Error.getInitialProps = ({ res, err }) => {
   return { statusCode };
 };
 
-export default Error; 
+export default Error;

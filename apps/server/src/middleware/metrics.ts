@@ -4,7 +4,7 @@ import { Resource } from '@opentelemetry/resources';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { Express } from 'express';
-import { Counter, Histogram,Registry } from 'prom-client';
+import { Counter, Histogram, Registry } from 'prom-client';
 
 // Initialize Prometheus metrics
 const register = new Registry();

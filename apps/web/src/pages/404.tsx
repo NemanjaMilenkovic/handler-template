@@ -13,4 +13,4 @@ NotFoundPage.getInitialProps = () => {
   return { statusCode: 404 };
 };
 
-export default NotFoundPage; 
+export default NotFoundPage;

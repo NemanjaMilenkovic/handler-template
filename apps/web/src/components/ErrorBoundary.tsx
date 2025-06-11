@@ -37,7 +37,8 @@ export class ErrorBoundary extends React.Component<Props, State> {
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
             <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
             <p className="text-gray-600 mb-4">
-              We apologize for the inconvenience. Please try refreshing the page or contact support if the problem persists.
+              We apologize for the inconvenience. Please try refreshing the page or contact support
+              if the problem persists.
             </p>
             <button
               onClick={() => this.setState({ hasError: false })}
@@ -52,4 +53,4 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
     return this.props.children;
   }
-} 
+}

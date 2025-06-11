@@ -13,4 +13,4 @@ ServerErrorPage.getInitialProps = () => {
   return { statusCode: 500 };
 };
 
-export default ServerErrorPage; 
+export default ServerErrorPage;
