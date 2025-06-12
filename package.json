@@ -9,7 +9,24 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "clean": "turbo run clean",
-    "clean:full": "turbo run clean && rm -rf node_modules .turbo"
+    "clean:full": "turbo run clean && rm -rf node_modules .turbo",
+    "infra:start": "node scripts/infra-manager.js start",
+    "infra:stop": "node scripts/infra-manager.js stop",
+    "infra:test": "node scripts/infra-manager.js test",
+    "infra:restart": "node scripts/infra-manager.js restart",
+    "infra:status": "node scripts/infra-manager.js status",
+    "infra:logs": "docker logs prometheus && docker logs grafana",
+    "infra:bash:start": "./start-infrastructure.sh",
+    "infra:bash:stop": "./stop-infrastructure.sh",
+    "infra:bash:test": "./test-infrastructure.sh",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:detached": "docker-compose -f docker-compose.dev.yml up -d --build",
+    "docker:dev:stop": "docker-compose -f docker-compose.dev.yml down",
+    "docker:dev:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:dev:restart": "npm run docker:dev:stop && npm run docker:dev:detached",
+    "sentry:test": "curl http://localhost:3001/test-error",
+    "infra:docker": "node scripts/infra-manager.js docker",
+    "test:full": "./test-infrastructure-full.sh"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",
@@ -39,7 +56,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@opentelemetry/api": "^1.7.0"
+      "@opentelemetry/api": "^1.9.0"
     }
   }
 }

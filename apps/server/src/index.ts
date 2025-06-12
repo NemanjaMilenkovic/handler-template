@@ -28,6 +28,12 @@ app.get('/health', (_, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Test error endpoint for Sentry testing
+app.get('/test-error', (_, _res) => {
+  logger.error('Test error endpoint triggered');
+  throw new Error('This is a test error for Sentry verification');
+});
+
 app.use(
   '/trpc',
   createExpressMiddleware({

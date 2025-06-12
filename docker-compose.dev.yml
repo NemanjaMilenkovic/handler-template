@@ -1,0 +1,218 @@
+version: '3.8'
+
+services:
+  # Application Services
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+      target: builder
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - SENTRY_DSN=${SENTRY_DSN}
+      - LOG_LEVEL=debug
+    volumes:
+      - ./apps/server/src:/app/apps/server/src
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/server/node_modules
+    command: ['npm', 'run', 'dev']
+    depends_on:
+      prometheus:
+        condition: service_started
+      sentry:
+        condition: service_started
+    networks:
+      - handler-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3001/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
+      - TRPC_URL_REWRITE=http://server:3001/trpc
+    volumes:
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+    command: ['npm', 'run', 'dev']
+    depends_on:
+      - server
+    networks:
+      - handler-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Infrastructure Services
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.docker.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - handler-network
+    healthcheck:
+      test:
+        ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:9090/-/ready']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3002:3000'
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    networks:
+      - handler-network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    command: ['--config=/etc/otel-collector-config.yml']
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - '8888:8888' # Prometheus metrics
+      - '8889:8889' # Prometheus exporter metrics
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP HTTP receiver
+    depends_on:
+      - prometheus
+    networks:
+      - handler-network
+
+  # Sentry for Error Tracking
+  sentry-redis:
+    image: redis:7-alpine
+    volumes:
+      - sentry_redis:/data
+    networks:
+      - handler-network
+
+  sentry-postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - sentry_postgres:/var/lib/postgresql/data
+    networks:
+      - handler-network
+
+  sentry:
+    image: getsentry/sentry:latest
+    ports:
+      - '9000:9000'
+    environment:
+      SENTRY_SECRET_KEY: ${SENTRY_SECRET_KEY:-your-secret-key-here}
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_DB_NAME: sentry
+    volumes:
+      - sentry_data:/var/lib/sentry/files
+    depends_on:
+      - sentry-redis
+      - sentry-postgres
+    command: ['sentry', 'run', 'web']
+    networks:
+      - handler-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/api/0/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  sentry-worker:
+    image: getsentry/sentry:latest
+    environment:
+      SENTRY_SECRET_KEY: ${SENTRY_SECRET_KEY:-your-secret-key-here}
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_DB_NAME: sentry
+    volumes:
+      - sentry_data:/var/lib/sentry/files
+    depends_on:
+      - sentry-redis
+      - sentry-postgres
+    command: ['sentry', 'run', 'worker']
+    networks:
+      - handler-network
+
+  sentry-cron:
+    image: getsentry/sentry:latest
+    environment:
+      SENTRY_SECRET_KEY: ${SENTRY_SECRET_KEY:-your-secret-key-here}
+      SENTRY_REDIS_HOST: sentry-redis
+      SENTRY_POSTGRES_HOST: sentry-postgres
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_DB_NAME: sentry
+    volumes:
+      - sentry_data:/var/lib/sentry/files
+    depends_on:
+      - sentry-redis
+      - sentry-postgres
+    command: ['sentry', 'run', 'cron']
+    networks:
+      - handler-network
+
+networks:
+  handler-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  sentry_data:
+  sentry_redis:
+  sentry_postgres:

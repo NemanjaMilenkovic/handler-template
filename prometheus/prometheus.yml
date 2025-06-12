@@ -3,12 +3,12 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: "handler-api"
+  - job_name: 'handler-api'
     static_configs:
-      - targets: ["server:3001"]
-    metrics_path: "/metrics"
+      - targets: ['host.docker.internal:3001']
+    metrics_path: '/metrics'
     scrape_interval: 5s
 
-  - job_name: "prometheus"
+  - job_name: 'prometheus'
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ['localhost:9090']

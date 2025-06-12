@@ -25,10 +25,12 @@ register.registerMetric(httpRequestsTotal);
 
 // Initialize OpenTelemetry
 const sdk = new NodeSDK({
-  resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'handler-api',
-    [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',
-  }),
+  resource: Resource.default().merge(
+    new Resource({
+      [SemanticResourceAttributes.SERVICE_NAME]: 'handler-api',
+      [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',
+    })
+  ),
   traceExporter: new OTLPTraceExporter({
     url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318/v1/traces',
   }),

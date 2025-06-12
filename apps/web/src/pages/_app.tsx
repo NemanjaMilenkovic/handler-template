@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/nextjs';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { api } from '../utils/trpc';
 
 import { ErrorBoundary } from '../components/ErrorBoundary';
+import { api } from '../utils/trpc';
 
 Sentry.init({ dsn: process.env.NEXT_PUBLIC_SENTRY_DSN });
 
