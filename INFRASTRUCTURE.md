@@ -1,335 +1,523 @@
-# 🏗️ Infrastructure Guide
+# Infrastructure Guide
 
-This guide covers the complete infrastructure setup for the Handler application, including monitoring, observability, and error tracking.
+A comprehensive guide to the enterprise-grade infrastructure stack included in this template.
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Development Modes](#development-modes)
+- [Infrastructure Services](#infrastructure-services)
+- [Available Commands](#available-commands)
+- [Configuration](#configuration)
+- [Monitoring & Observability](#monitoring--observability)
+- [Troubleshooting](#troubleshooting)
+- [Team Onboarding](#team-onboarding)
+- [Best Practices](#best-practices)
+
+---
+
+## 🎯 Overview
+
+This template provides a complete observability and monitoring stack that mirrors production environments. You can run infrastructure in two modes:
+
+1. **Hybrid Mode** (Recommended): Infrastructure in Docker, applications local
+2. **Full Docker Mode**: Everything containerized for production parity
+
+### Infrastructure Stack
+
+| Component         | Purpose                      | Port | Status                  |
+| ----------------- | ---------------------------- | ---- | ----------------------- |
+| **Prometheus**    | Metrics collection & storage | 9090 | ✅ Production-ready     |
+| **Grafana**       | Monitoring dashboards        | 3002 | ✅ Pre-configured       |
+| **OpenTelemetry** | Distributed tracing          | 8888 | ✅ Auto-instrumentation |
+| **Sentry**        | Error tracking               | 9000 | ✅ Local instance       |
+| **Winston**       | Structured logging           | -    | ✅ Application logs     |
+
+---
 
 ## 🚀 Quick Start
 
-### Option 1: Hybrid Mode (Recommended for Development)
+### Prerequisites
 
 ```bash
-# Start infrastructure services (Docker)
+# Ensure you have required tools
+node --version  # v20.0.0+
+pnpm --version  # v8.15.4+
+docker --version
+docker-compose --version
+```
+
+### 30-Second Setup
+
+```bash
+# Clone and install
+git clone <repo-url> && cd handler
+pnpm install
+
+# Start infrastructure + development
+npm run infra:start && pnpm dev
+
+# Verify everything works
+npm run infra:test
+```
+
+### Access Your Services
+
+- **Web App**: http://localhost:3000
+- **API Server**: http://localhost:3001
+- **Grafana**: http://localhost:3002 (admin/admin)
+- **Prometheus**: http://localhost:9090
+
+---
+
+## 🔄 Development Modes
+
+### Mode 1: Hybrid Development (Recommended)
+
+**Best for**: Day-to-day development with fast hot reloading
+
+```bash
+# Start infrastructure stack
 npm run infra:start
 
-# Start application services (Local Node.js)
+# Start your applications locally
 pnpm dev
 
 # Test everything
 npm run infra:test
 ```
 
-### Option 2: Full Docker Mode (Production-like)
+**What runs where**:
+
+- 🐳 **Docker**: Prometheus, Grafana, OpenTelemetry
+- 💻 **Local**: Web app (3000), API server (3001)
+
+**Advantages**:
+
+- ⚡ Lightning-fast hot reloading
+- 🔧 Easy debugging with source maps
+- 💾 Lower resource usage
+- 🔄 Quick iteration cycles
+
+### Mode 2: Full Docker Development
+
+**Best for**: Testing production parity, CI/CD simulation
 
 ```bash
 # Start everything in Docker
 npm run docker:dev
 
-# Test everything
+# Test full stack including Sentry
 npm run test:full
 
-# View logs
+# View logs from all containers
 npm run docker:dev:logs
-
-# Stop everything
-npm run docker:dev:stop
 ```
 
-## 📊 Services Overview
+**What runs where**:
 
-| Service           | Hybrid Mode    | Docker Mode | Port | Purpose               |
-| ----------------- | -------------- | ----------- | ---- | --------------------- |
-| **Web App**       | Local Node.js  | Docker      | 3000 | Next.js frontend      |
-| **API Server**    | Local Node.js  | Docker      | 3001 | Express backend       |
-| **Prometheus**    | Docker         | Docker      | 9090 | Metrics collection    |
-| **Grafana**       | Docker         | Docker      | 3002 | Metrics visualization |
-| **Sentry**        | External/Local | Docker      | 9000 | Error tracking        |
-| **OpenTelemetry** | -              | Docker      | 8888 | Trace collection      |
+- 🐳 **Docker**: Everything (Web, API, Infrastructure, Sentry)
 
-## 🔧 Development Modes
+**Advantages**:
 
-### 🔀 Hybrid Mode (Default)
+- 🎯 Production parity
+- 🧪 Complete integration testing
+- 🔒 Isolated environments
+- 📊 Full observability stack
 
-**Best for:** Daily development, debugging, hot reloading
+---
 
-**Pros:**
+## 🛠 Infrastructure Services
 
-- ✅ Fast hot reloading
-- ✅ Easy debugging
-- ✅ IDE integration
-- ✅ Quick startup
+### Prometheus (Port 9090)
 
-**Cons:**
+**Purpose**: Metrics collection and storage
 
-- ❌ Requires Node.js/pnpm locally
-- ❌ Less production-like
+**Key Features**:
 
-**Commands:**
+- HTTP request metrics
+- Application performance metrics
+- Custom business metrics
+- Health check endpoints
 
-```bash
-npm run infra:start      # Start infrastructure
-npm run infra:stop       # Stop infrastructure
-npm run infra:status     # Check status
-npm run infra:test       # Test infrastructure
-```
+**Endpoints**:
 
-### 🐳 Full Docker Mode
+- Dashboard: http://localhost:9090
+- Targets: http://localhost:9090/targets
+- Metrics: http://localhost:9090/metrics
 
-**Best for:** Production testing, team consistency, CI/CD
+### Grafana (Port 3002)
 
-**Pros:**
+**Purpose**: Visualization and alerting
 
-- ✅ Production parity
-- ✅ Team consistency
-- ✅ Complete isolation
-- ✅ Includes Sentry locally
+**Pre-configured Dashboards**:
 
-**Cons:**
+- Application Overview
+- HTTP Request Metrics
+- System Health
+- Custom Business Metrics
 
-- ❌ Slower hot reloading
-- ❌ More complex debugging
-- ❌ Larger resource usage
+**Default Login**:
 
-**Commands:**
+- Username: `admin`
+- Password: `admin`
 
-```bash
-npm run docker:dev           # Start everything
-npm run docker:dev:stop      # Stop everything
-npm run docker:dev:logs      # View logs
-npm run docker:dev:restart   # Restart everything
-npm run test:full           # Test everything
-```
+### OpenTelemetry Collector (Port 8888)
 
-## 🐛 Sentry Error Tracking
+**Purpose**: Telemetry data collection and processing
 
-### Setup Options
+**Capabilities**:
 
-#### Option A: External Sentry (Recommended)
+- Distributed tracing
+- Metrics aggregation
+- Log collection
+- Data export to multiple backends
 
-1. Create account at [sentry.io](https://sentry.io)
-2. Create a new project
-3. Copy your DSN
-4. Update `.env`:
+### Sentry (Port 9000) - Docker Mode Only
 
-```bash
-SENTRY_DSN=https://your-dsn@sentry.io/project-id
-NEXT_PUBLIC_SENTRY_DSN=https://your-dsn@sentry.io/project-id
-```
+**Purpose**: Error tracking and performance monitoring
 
-#### Option B: Local Sentry (Docker Mode Only)
+**Features**:
 
-When using `npm run docker:dev`, Sentry runs locally at http://localhost:9000
+- Real-time error tracking
+- Performance monitoring
+- Release tracking
+- User feedback
 
-**First-time setup:**
+**Test Error Endpoint**: `GET http://localhost:3001/test-error`
 
-```bash
-# Start the stack
-npm run docker:dev
+---
 
-# Wait for Sentry to be ready (2-3 minutes)
-# Access http://localhost:9000
-# Create admin account
-# Create a project
-# Copy the DSN to your .env file
-```
-
-### Testing Sentry
-
-#### Generate Test Errors
-
-```bash
-# Generate a server error
-npm run sentry:test
-
-# Or manually
-curl http://localhost:3001/test-error
-```
-
-#### Check Error in Sentry
-
-1. **External Sentry:** Check your [sentry.io dashboard](https://sentry.io)
-2. **Local Sentry:** Visit http://localhost:9000
-
-## 📈 Monitoring & Observability
-
-### Prometheus (Metrics)
-
-- **URL:** http://localhost:9090
-- **Purpose:** Collects application and infrastructure metrics
-- **Key Metrics:**
-  - `http_request_duration_seconds` - API response times
-  - `http_requests_total` - Request counts
-  - `up` - Service health
-
-### Grafana (Dashboards)
-
-- **URL:** http://localhost:3002
-- **Login:** admin/admin
-- **Purpose:** Visualize Prometheus metrics
-- **Dashboards:** Custom dashboards for your application
-
-### OpenTelemetry (Traces)
-
-- **URL:** http://localhost:8888/metrics
-- **Purpose:** Distributed tracing and additional metrics
-- **Only available in Docker mode**
-
-## 🧪 Testing
-
-### Quick Health Check
-
-```bash
-npm run infra:status
-```
-
-### Basic Infrastructure Test
-
-```bash
-npm run infra:test
-```
-
-### Full Stack Test (Docker Mode)
-
-```bash
-npm run test:full
-```
-
-### Load Testing
-
-```bash
-./load-test.sh
-```
-
-## 📁 File Structure
-
-```
-├── docker-compose.dev.yml          # Full Docker development stack
-├── docker-compose.prod.yml         # Production stack
-├── prometheus/
-│   ├── prometheus.yml              # Local development config
-│   └── prometheus.docker.yml       # Docker development config
-├── otel-collector-config.yml       # OpenTelemetry configuration
-├── scripts/
-│   ├── infra-manager.js            # Node.js infrastructure manager
-│   └── package.json                # Scripts package config
-├── test-infrastructure.sh          # Basic infrastructure tests
-├── test-infrastructure-full.sh     # Full stack tests
-├── start-infrastructure.sh         # Hybrid mode startup
-├── stop-infrastructure.sh          # Stop all infrastructure
-└── env.example                     # Environment variables template
-```
-
-## 🔧 Environment Variables
-
-Copy `env.example` to `.env` and configure:
-
-```bash
-# Sentry (External)
-SENTRY_DSN=https://your-dsn@sentry.io/project-id
-NEXT_PUBLIC_SENTRY_DSN=https://your-dsn@sentry.io/project-id
-
-# Sentry (Local Docker - auto-configured)
-SENTRY_SECRET_KEY=development-secret-key
-
-# Grafana
-GRAFANA_PASSWORD=admin123
-
-# OpenTelemetry
-OTEL_SERVICE_NAME=handler-app
-OTEL_SERVICE_VERSION=1.0.0
-```
-
-## 🚨 Troubleshooting
-
-### Port Conflicts
-
-```bash
-# Check what's using a port
-lsof -i :3000
-
-# Kill process on port
-kill -9 $(lsof -ti:3000)
-```
-
-### Docker Issues
-
-```bash
-# View logs
-npm run docker:dev:logs
-
-# Restart single service
-docker-compose -f docker-compose.dev.yml restart server
-
-# Rebuild containers
-npm run docker:dev:stop
-npm run docker:dev
-```
-
-### Sentry Not Working
-
-1. Check DSN is correct in `.env`
-2. Verify Sentry service is running
-3. Check server logs for Sentry errors
-4. Test error endpoint: `npm run sentry:test`
-
-## 📚 Commands Reference
+## 📚 Available Commands
 
 ### Infrastructure Management
 
 ```bash
-npm run infra:start         # Start hybrid infrastructure
-npm run infra:stop          # Stop infrastructure
-npm run infra:status        # Check status
-npm run infra:restart       # Restart infrastructure
-npm run infra:test          # Test infrastructure
+# Core infrastructure commands
+npm run infra:start      # Start infrastructure stack
+npm run infra:stop       # Stop all services
+npm run infra:restart    # Restart infrastructure
+npm run infra:status     # Check service status
+npm run infra:test       # Health check all services
+
+# Advanced management
+node scripts/infra-manager.js start     # Alternative start
+node scripts/infra-manager.js status    # Detailed status
+node scripts/infra-manager.js help      # Show all commands
 ```
 
 ### Docker Development
 
 ```bash
-npm run docker:dev          # Start full Docker stack
-npm run docker:dev:stop     # Stop Docker stack
-npm run docker:dev:logs     # View logs
-npm run docker:dev:restart  # Restart Docker stack
-```
+# Full Docker development
+npm run docker:dev           # Start full stack
+npm run docker:dev:stop      # Stop Docker stack
+npm run docker:dev:logs      # View container logs
+npm run docker:dev:restart   # Restart Docker stack
 
-### Testing
-
-```bash
-npm run test:full           # Test full infrastructure
-npm run sentry:test         # Generate test error
-./load-test.sh              # Generate load
+# Testing
+npm run test:full           # Test all services
+npm run sentry:test         # Test Sentry integration
 ```
 
 ### Application Development
 
 ```bash
-pnpm dev                    # Start apps (hybrid mode)
-pnpm build                  # Build all packages
-pnpm test                   # Run tests
-pnpm lint                   # Lint code
+# Development
+pnpm dev                    # Start apps locally
+pnpm build                  # Build for production
+pnpm test                   # Run all tests
+pnpm lint                   # Check code quality
+pnpm lint:fix              # Auto-fix issues
 ```
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Copy `env.example` to `.env` and configure:
+
+```bash
+# Sentry Configuration
+SENTRY_DSN=your_sentry_dsn_here
+SENTRY_ORG=your_organization
+SENTRY_PROJECT=your_project
+
+# Grafana Admin (optional)
+GF_SECURITY_ADMIN_PASSWORD=your_secure_password
+
+# OpenTelemetry
+OTEL_SERVICE_NAME=handler
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:8888
+```
+
+### Key Configuration Files
+
+| File                               | Purpose                       |
+| ---------------------------------- | ----------------------------- |
+| `docker-compose.dev.yml`           | Full Docker development stack |
+| `prometheus/prometheus.docker.yml` | Prometheus configuration      |
+| `otel-collector-config.yml`        | OpenTelemetry collector setup |
+| `.vscode/settings.json`            | VS Code auto-formatting       |
+| `turbo.json`                       | Monorepo build pipeline       |
+
+### Port Configuration
+
+Default ports (configurable via environment variables):
+
+```bash
+WEB_PORT=3000           # Next.js application
+SERVER_PORT=3001        # Express.js API
+GRAFANA_PORT=3002       # Grafana dashboard
+OTEL_PORT=8888          # OpenTelemetry collector
+PROMETHEUS_PORT=9090    # Prometheus server
+SENTRY_PORT=9000        # Sentry web interface
+```
+
+---
+
+## 📊 Monitoring & Observability
+
+### Application Metrics
+
+Your applications automatically export metrics:
+
+```typescript
+// Example: Custom business metrics
+import { prometheusRegister } from './metrics';
+
+const orderCounter = new Counter({
+  name: 'orders_total',
+  help: 'Total number of orders processed',
+  labelNames: ['status', 'type'],
+});
+
+orderCounter.inc({ status: 'completed', type: 'premium' });
+```
+
+### Distributed Tracing
+
+OpenTelemetry automatically instruments:
+
+- HTTP requests/responses
+- Database queries
+- External API calls
+- Custom spans
+
+### Error Tracking
+
+Sentry integration captures:
+
+- Unhandled exceptions
+- Performance issues
+- User feedback
+- Release tracking
+
+### Structured Logging
+
+Winston provides structured logging:
+
+```typescript
+import logger from './logger';
+
+logger.info('Order processed', {
+  orderId: '12345',
+  userId: 'user-456',
+  amount: 99.99,
+  duration: 1200,
+});
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### ❌ "Port already in use" errors
+
+```bash
+# Check what's using ports
+lsof -i :3000 -i :3001 -i :9090
+
+# Kill processes on specific ports
+npm run infra:stop
+# or manually:
+kill -9 $(lsof -ti:3000)
+```
+
+#### ❌ "Docker containers not starting"
+
+```bash
+# Check Docker status
+docker ps -a
+
+# View container logs
+docker logs container_name
+
+# Restart Docker service
+brew services restart docker  # macOS
+sudo systemctl restart docker # Linux
+```
+
+#### ❌ "Prometheus targets down"
+
+```bash
+# Check if applications are running
+curl http://localhost:3001/health
+curl http://localhost:3000/api/health
+
+# Verify Prometheus config
+docker exec -it prometheus cat /etc/prometheus/prometheus.yml
+```
+
+#### ❌ "Grafana login issues"
+
+```bash
+# Reset Grafana admin password
+docker exec -it grafana grafana-cli admin reset-admin-password newpassword
+```
+
+### Debug Commands
+
+```bash
+# View all running processes
+npm run infra:status
+
+# Test all endpoints
+npm run infra:test
+
+# View Docker logs
+npm run docker:dev:logs
+
+# Check individual services
+curl http://localhost:9090/-/healthy  # Prometheus
+curl http://localhost:3002/api/health # Grafana
+curl http://localhost:8888/          # OpenTelemetry
+```
+
+### Performance Issues
+
+```bash
+# Check resource usage
+docker stats
+
+# View application logs
+docker logs handler-web-dev
+docker logs handler-server-dev
+
+# Monitor file changes (for hot reload issues)
+docker exec -it handler-web-dev ls -la /app
+```
+
+---
+
+## 👥 Team Onboarding
+
+### New Developer Setup (5 minutes)
+
+```bash
+# 1. Clone and install
+git clone <repo-url> && cd handler
+pnpm install
+
+# 2. Copy environment template
+cp env.example .env
+
+# 3. Start development
+npm run infra:start && pnpm dev
+
+# 4. Verify setup
+npm run infra:test
+```
+
+### VS Code Setup
+
+The project includes VS Code settings for:
+
+- ✅ Format on save (Prettier)
+- ✅ ESLint auto-fix
+- ✅ TypeScript strict mode
+- ✅ Import sorting
+
+### Git Workflow
+
+Pre-commit hooks automatically:
+
+- ✅ Run ESLint with auto-fix
+- ✅ Format code with Prettier
+- ✅ Type check with TypeScript
+- ✅ Run tests on staged files
+
+### Production Deployment
+
+```bash
+# Build and test locally
+pnpm build
+npm run test:full
+
+# Deploy with Docker
+docker-compose -f docker-compose.prod.yml up --build
+
+# Monitor deployment
+npm run infra:test
+```
+
+---
 
 ## 🎯 Best Practices
 
-1. **Use Hybrid Mode** for daily development
-2. **Use Docker Mode** for testing production issues
-3. **Monitor logs** regularly: `npm run docker:dev:logs`
-4. **Test error tracking** after setup: `npm run sentry:test`
-5. **Check metrics** in Grafana dashboards
-6. **Run tests** before committing: `npm run test:full`
+### Development Workflow
 
-## 🤝 Team Onboarding
+1. **Start with hybrid mode** for fast development
+2. **Test with Docker mode** before pushing changes
+3. **Monitor metrics** during development
+4. **Use error tracking** to catch issues early
 
-New team members should:
+### Monitoring Best Practices
 
-1. Clone the repository
-2. Copy `env.example` to `.env`
-3. Run `npm run infra:start`
-4. Run `pnpm dev` in another terminal
-5. Test with `npm run infra:test`
-6. Set up Sentry account and update `.env`
+1. **Add custom metrics** for business logic
+2. **Set up alerts** in Grafana for critical paths
+3. **Use structured logging** for debugging
+4. **Monitor performance** with OpenTelemetry
 
-For production-like testing:
+### Code Quality
 
-1. Run `npm run docker:dev`
-2. Wait 2-3 minutes for all services
-3. Test with `npm run test:full`
+1. **Format on save** is configured automatically
+2. **ESLint rules** enforce best practices
+3. **TypeScript strict mode** catches errors early
+4. **Pre-commit hooks** ensure quality
+
+### Infrastructure Management
+
+1. **Use npm scripts** for consistent commands
+2. **Check service status** before development
+3. **Monitor resource usage** with Docker stats
+4. **Clean up** with stop commands when done
+
+---
+
+## 🔗 External Resources
+
+- [Prometheus Documentation](https://prometheus.io/docs/)
+- [Grafana Documentation](https://grafana.com/docs/)
+- [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
+- [Sentry Documentation](https://docs.sentry.io/)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+
+---
+
+## 🆘 Need Help?
+
+1. **Check this guide** for common solutions
+2. **Run diagnostics**: `npm run infra:test`
+3. **View logs**: `npm run docker:dev:logs`
+4. **Check GitHub issues** for known problems
+5. **Ask your team** for infrastructure-specific help
+
+---
+
+_This infrastructure setup provides enterprise-grade monitoring and development experience. Happy coding! 🚀_

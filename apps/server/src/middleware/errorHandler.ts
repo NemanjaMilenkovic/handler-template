@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 
 export class AppError extends Error {
   constructor(
@@ -12,25 +12,26 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = (
+export const errorHandler: ErrorRequestHandler = (
   err: Error | AppError,
   req: Request,
   res: Response,
   _next: NextFunction
-) => {
+): void => {
   if (err instanceof AppError) {
     // Operational error - send to client
-    return res.status(err.statusCode).json({
+    res.status(err.statusCode).json({
       status: 'error',
       message: err.message,
     });
+    return;
   }
 
   // Programming or unknown error - don't leak error details
   console.error('ERROR 💥', err);
   Sentry.captureException(err);
 
-  return res.status(500).json({
+  res.status(500).json({
     status: 'error',
     message: 'Something went wrong',
   });
