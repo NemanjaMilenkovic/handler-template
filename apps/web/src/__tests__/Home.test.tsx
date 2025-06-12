@@ -4,11 +4,11 @@ import { render, screen } from '@testing-library/react';
 
 import Home from '../pages/index';
 
-// Mock trpc
+// Mock api client
 jest.mock('../utils/trpc', () => ({
-  trpc: {
+  api: {
     hello: {
-      useQuery: () => ({
+      useQuery: jest.fn().mockReturnValue({
         data: { greeting: 'Hello from tRPC!' },
         isLoading: false,
       }),
