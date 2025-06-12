@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@opentelemetry/api": "^1.7.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.41.1",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.48.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.60.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
     "@opentelemetry/resources": "^1.21.0",
-    "@opentelemetry/sdk-node": "^0.48.0",
+    "@opentelemetry/sdk-node": "^0.202.0",
     "@opentelemetry/semantic-conventions": "^1.21.0",
     "@sentry/node": "^8.21.0",
     "@trpc/server": "^10.45.0",
@@ -27,9 +27,9 @@
     "express-rate-limit": "^7.1.5",
     "helmet": "^7.1.0",
     "prom-client": "^15.1.0",
-    "superjson": "^2.2.1",
+    "superjson": "^2.2.2",
     "winston": "^3.11.0",
-    "zod": "^3.22.4"
+    "zod": "^3.25.62"
   },
   "devDependencies": {
     "@handler/eslint-config": "workspace:*",
