@@ -52,10 +52,5 @@
     "*.{md,json}": [
       "prettier --write"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@opentelemetry/api": "^1.9.0"
-    }
   }
 }
