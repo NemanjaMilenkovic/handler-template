@@ -1,5 +1,4 @@
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '\\.d\\.ts$'],
   extensionsToTreatAsEsm: ['.ts'],
