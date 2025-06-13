@@ -1,0 +1,62 @@
+{
+  "name": "handler",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "clean:full": "turbo run clean && rm -rf node_modules .turbo",
+    "infra:start": "node scripts/infra-manager.js start",
+    "infra:stop": "node scripts/infra-manager.js stop",
+    "infra:test": "node scripts/infra-manager.js test",
+    "infra:restart": "node scripts/infra-manager.js restart",
+    "infra:status": "node scripts/infra-manager.js status",
+    "infra:logs": "docker logs prometheus && docker logs grafana",
+    "infra:bash:start": "bash scripts/infra/start-infrastructure.sh",
+    "infra:bash:stop": "bash scripts/infra/stop-infrastructure.sh",
+    "infra:bash:test": "bash scripts/infra/test-infrastructure.sh",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev:detached": "docker-compose -f docker-compose.dev.yml up -d --build",
+    "docker:dev:stop": "docker-compose -f docker-compose.dev.yml down",
+    "docker:dev:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:dev:restart": "npm run docker:dev:stop && npm run docker:dev:detached",
+    "sentry:test": "curl http://localhost:3012/test-error",
+    "infra:docker": "node scripts/infra-manager.js docker",
+    "test:full": "bash scripts/infra/test-infrastructure-full.sh"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@next/eslint-plugin-next": "15.3.3",
+    "@swc/core": "^1.12.0",
+    "@swc/jest": "^0.2.38",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@8.15.4",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.15.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@opentelemetry/api": "1.8.0"
+    }
+  }
+}

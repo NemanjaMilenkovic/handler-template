@@ -1,0 +1,25 @@
+{
+  "name": "@handler/infra-manager",
+  "version": "1.0.0",
+  "description": "Infrastructure management tool for Handler application",
+  "main": "infra-manager.js",
+  "bin": {
+    "infra": "./infra-manager.js",
+    "handler-infra": "./infra-manager.js"
+  },
+  "scripts": {
+    "start": "node infra-manager.js start",
+    "stop": "node infra-manager.js stop",
+    "test": "node infra-manager.js test",
+    "status": "node infra-manager.js status"
+  },
+  "keywords": [
+    "infrastructure",
+    "docker",
+    "prometheus",
+    "grafana",
+    "development"
+  ],
+  "author": "Handler Team",
+  "license": "MIT"
+}

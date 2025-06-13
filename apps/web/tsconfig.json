@@ -1,0 +1,11 @@
+{
+  "extends": "@handler/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*", "pages/**/*", "next-env.d.ts"],
+  "exclude": ["node_modules"]
+}

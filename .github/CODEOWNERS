@@ -1,0 +1,41 @@
+# This is a CODEOWNERS file.
+
+# This file is commented out by default. To enable it, uncomment the lines
+
+# and replace the placeholder usernames/teams with your own.
+
+# For more information, see:
+
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ===============================================================
+
+# Examples:
+
+# ===============================================================
+
+# Catch-all owner for all files.
+
+# Useful for small teams or solo projects.
+
+# \* @your-github-username
+
+# Own all the files in the Next.js web app.
+
+# /apps/web/ @your-org/frontend-team
+
+# Own all the files in the Express server app.
+
+# /apps/server/ @your-org/backend-team
+
+# Own all documentation files.
+
+# docs/ @your-org/docs-team
+
+# Own all GitHub Actions workflow files.
+
+# .github/workflows/ @your-org/devops-team
+
+# Own all JavaScript files, regardless of location.
+
+# \*.js @javascript-expert-user
