@@ -198,7 +198,7 @@ const commands = {
   async test() {
     log('🧪 Running infrastructure tests...', 'cyan');
     try {
-      await runScript('./test-infrastructure.sh');
+      await runScript('./scripts/infra/test-infrastructure.sh');
     } catch (error) {
       log(`❌ Tests failed: ${error.message}`, 'red');
       process.exit(1);
@@ -257,7 +257,7 @@ const commands = {
       log('  • Sentry: http://localhost:9000');
       log('  • OpenTelemetry: http://localhost:8888');
       log('\nNext steps:', 'blue');
-      log('  • Test everything: ./test-infrastructure-full.sh');
+      log('  • Test everything: bash scripts/infra/test-infrastructure-full.sh');
       log('  • View logs: npm run docker:dev:logs');
       log('  • Stop stack: npm run docker:dev:stop');
     } catch (error) {
