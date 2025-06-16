@@ -154,14 +154,14 @@ importers:
         specifier: ^4.36.1
         version: 4.39.2(react-dom@18.3.1)(react@18.3.1)
       '@trpc/client':
-        specifier: ^10.45.0
-        version: 10.45.2(@trpc/server@10.45.2)
+        specifier: ^11.4.1
+        version: 11.4.1(@trpc/server@10.45.2)(typescript@5.8.3)
       '@trpc/next':
         specifier: ^10.45.2
-        version: 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@10.45.2)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@15.3.3)(react-dom@18.3.1)(react@18.3.1)
+        version: 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@11.4.1)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@15.3.3)(react-dom@18.3.1)(react@18.3.1)
       '@trpc/react-query':
         specifier: ^10.45.0
-        version: 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1)
+        version: 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@11.4.1)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1)
       '@trpc/server':
         specifier: ^10.45.0
         version: 10.45.2
@@ -3832,7 +3832,7 @@ packages:
       '@opentelemetry/api': 1.8.0
       '@opentelemetry/api-logs': 0.200.0
       '@types/shimmer': 1.2.0
-      import-in-the-middle: 1.14.0
+      import-in-the-middle: 1.14.2
       require-in-the-middle: 7.5.2
       shimmer: 1.2.1
     transitivePeerDependencies:
@@ -5279,15 +5279,17 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@trpc/client@10.45.2(@trpc/server@10.45.2):
-    resolution: {integrity: sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==}
+  /@trpc/client@11.4.1(@trpc/server@10.45.2)(typescript@5.8.3):
+    resolution: {integrity: sha512-h28HKqxOBu35Q3f7h2chOjkQnwmIFdZDqG6NxovPaxEGcUmQWdo63mthlPSiMThXpy9J1AUA8q4uZZ4a5d1JVA==}
     peerDependencies:
-      '@trpc/server': 10.45.2
+      '@trpc/server': 11.4.1
+      typescript: '>=5.7.2'
     dependencies:
       '@trpc/server': 10.45.2
+      typescript: 5.8.3
     dev: false
 
-  /@trpc/next@10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@10.45.2)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@15.3.3)(react-dom@18.3.1)(react@18.3.1):
+  /@trpc/next@10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@11.4.1)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@15.3.3)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-RSORmfC+/nXdmRY1pQ0AalsVgSzwNAFbZLYHiTvPM5QQ8wmMEHilseCYMXpu0se/TbPt9zVR6Ka2d7O6zxKkXg==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
@@ -5299,15 +5301,15 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.39.2(react-dom@18.3.1)(react@18.3.1)
-      '@trpc/client': 10.45.2(@trpc/server@10.45.2)
-      '@trpc/react-query': 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1)
+      '@trpc/client': 11.4.1(@trpc/server@10.45.2)(typescript@5.8.3)
+      '@trpc/react-query': 10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@11.4.1)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1)
       '@trpc/server': 10.45.2
       next: 15.3.3(@babel/core@7.27.4)(@opentelemetry/api@1.8.0)(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /@trpc/react-query@10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1):
+  /@trpc/react-query@10.45.2(@tanstack/react-query@4.39.2)(@trpc/client@11.4.1)(@trpc/server@10.45.2)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-BAqb9bGZIscroradlNx+Cc9522R+idY3BOSf5z0jHUtkxdMbjeGKxSSMxxu7JzoLqSIEC+LVzL3VvF8sdDWaZQ==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
@@ -5317,7 +5319,7 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.39.2(react-dom@18.3.1)(react@18.3.1)
-      '@trpc/client': 10.45.2(@trpc/server@10.45.2)
+      '@trpc/client': 11.4.1(@trpc/server@10.45.2)(typescript@5.8.3)
       '@trpc/server': 10.45.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -5338,7 +5340,7 @@ packages:
   /@types/accepts@1.3.7:
     resolution: {integrity: sha512-Pay9fq2lM2wXPWbteBsRAGiWH2hig4ZE2asK+mm7kUzlxRTfL961rj89I6zV/E3PcIkDqyuBEcMxFT7rccugeQ==}
     dependencies:
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
     dev: false
 
   /@types/aria-query@5.0.4:
@@ -5418,7 +5420,7 @@ packages:
       '@types/connect': 3.4.38
       '@types/express': 4.17.23
       '@types/keygrip': 1.0.6
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
     dev: false
 
   /@types/cors@2.8.19:
@@ -5472,7 +5474,7 @@ packages:
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
     dev: true
 
   /@types/hapi__catbox@10.2.6:
@@ -5515,7 +5517,7 @@ packages:
   /@types/ioredis@4.28.10:
     resolution: {integrity: sha512-69LyhUgrXdgcNDv7ogs1qXZomnfOEnSmrmMFqKgt1XMJxmoOSG/u3wYy13yACIfKuMJ8IhKgHafDO3sx19zVQQ==}
     dependencies:
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
     dev: false
 
   /@types/istanbul-lib-coverage@2.0.6:
@@ -5613,6 +5615,11 @@ packages:
 
   /@types/node@20.19.0:
     resolution: {integrity: sha512-hfrc+1tud1xcdVTABC2JiomZJEklMcXYNTVtZLAeqTVWD+qL5jkHKT+1lOtqDdGxt+mB53DTtiz673vfjU8D1Q==}
+    dependencies:
+      undici-types: 6.21.0
+
+  /@types/node@20.19.1:
+    resolution: {integrity: sha512-jJD50LtlD2dodAEO653i3YF04NWak6jN3ky+Ri3Em3mGR39/glWiboM/IePaRbgwSfqM1TpGXfAg8ohn/4dTgA==}
     dependencies:
       undici-types: 6.21.0
 
@@ -8435,6 +8442,15 @@ packages:
       module-details-from-path: 1.0.4
     dev: false
 
+  /import-in-the-middle@1.14.2:
+    resolution: {integrity: sha512-5tCuY9BV8ujfOpwtAGgsTx9CGUapcFMEEyByLv1B+v2+6DhAcw+Zr0nhQT7uwaZ7DiourxFEscghOR8e1aPLQw==}
+    dependencies:
+      acorn: 8.15.0
+      acorn-import-attributes: 1.9.5(acorn@8.15.0)
+      cjs-module-lexer: 1.4.3
+      module-details-from-path: 1.0.4
+    dev: false
+
   /import-in-the-middle@1.7.1:
     resolution: {integrity: sha512-1LrZPDtW+atAxH42S6288qyDFNQ2YCty+2mxEPRtfazH6Z5QwkaBSTS2ods7hnVJioF6rkRfNoA6A/MstpFXLg==}
     dependencies:
@@ -8812,7 +8828,7 @@ packages:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.6.0
@@ -8959,7 +8975,7 @@ packages:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -9201,7 +9217,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: false
@@ -9210,7 +9226,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -10341,7 +10357,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.19.0
+      '@types/node': 20.19.1
       long: 5.3.2
     dev: false
 
