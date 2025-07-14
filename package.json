@@ -30,14 +30,14 @@
     "test:full": "bash scripts/infra/test-infrastructure-full.sh"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.27.2",
-    "@next/eslint-plugin-next": "15.3.3",
-    "@swc/core": "^1.12.0",
-    "@swc/jest": "^0.2.38",
+    "@babel/preset-env": "^7.28.0",
+    "@next/eslint-plugin-next": "15.3.5",
+    "@swc/core": "^1.12.14",
+    "@swc/jest": "^0.2.39",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "prettier": "^3.2.5",
+    "prettier": "^3.6.2",
     "turbo": "^2.5.4"
   },
   "packageManager": "pnpm@8.15.4",
