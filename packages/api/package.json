@@ -13,8 +13,8 @@
     "clean": "rm -rf dist"
   },
   "devDependencies": {
-    "tsup": "^8.0.2",
-    "typescript": "^5.3.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
     "@handler/tsconfig": "workspace:*",
     "@handler/eslint-config": "workspace:*"
   },
